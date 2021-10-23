@@ -1,0 +1,242 @@
+@startuml
+
+class vector<T> {
+- {static} initial_capacity : int = 10
+- _size : int = 0
+- _capacity : int = 0
+- _arr : T* = nullptr
+--
+- __copy(other : const vector<T>&)
+- __move(other : vector<T>&&)
+- __free()
+
++ vector(n : int = initial_capacity) {explicit}
++ vector(initializerList : const std::initializer_list<T>&)
++ vector(other : const vector<T>&)
++ vector(other : vector<T>&&)
+
++ ~vector()
+
++ resize(n : int)
++ reserve(n : int)
+
++ add(elem : const T&)
++ remove(index : int)
+
++ size() : int {const}
+
++ operator=(initializerList : const std::initializer_list<T>&) : vector<T>&
++ operator=(other : const vector<T>&) : vector<T>&
++ operator=(other : vector<T>&&) : vector<T>&
+
++ operator[](index : int) : T&
++ operator[](index : int) : const T& {const}
+
+<<friend>>
++ operator<<(out : std::ostream&, v : const vector<T>&) : std::ostream&
+
++ begin() : iterator
++ end() : iterator
++ rbegin() : iterator
++ rend() : iterator
++ from(index : int) : iterator
++ rfrom(index : int) : iterator
+
++ begin() : const_iterator {const}
++ end() : const_iterator {const}
++ rbegin() : const_iterator {const}
++ rend() : const_iterator {const}
++ from(index : int) : const_iterator {const}
++ rfrom(index : int) : const_iterator {const}
+}
+
+rectangle iterator <<typedef>> {
+}
+
+rectangle const_iterator <<typedef>> {
+}
+
+class vector_iterator<T> {
+- _reverse : bool
+- _cur : T*
+--
+- vector_iterator(start : T*, reverse : bool = false) {explicit}
+
++ reverse() : vector_iterator<T>&
+
++ operator*() : T&
+
++ operator++() : vector_iterator<T>&
++ operator++(int) : vector_iterator<T>
++ operator+=(n : int) : vector_iterator<T>&
+
++ operator--() : vector_iterator<T>&
++ operator--(int) : vector_iterator<T>
++ operator-=(n : int) : vector_iterator<T>&
+
++ operator==(other : const vector_iterator<T>&) : bool {const}
++ operator!=(other : const vector_iterator<T>&) : bool {const}
+}
+
+class matrix<T> {
+- _width : int = 0
+- _height : int = 0
+- _matr : vector<column> = nullptr
+--
+- __copy(other : const matrix<T>&)
+- __move(other : matrix<T>&&)
+
++ matrix(width : int, height : int)
++ matrix(initializerList : const std::initializer_list<column>&)
++ matrix(other : const matrix<T>&)
++ matrix(other : matrix<T>&&)
+
++ width() : int {const}
++ height() : int {const}
+
++ operator[](index : int) : column&
++ operator[](index : int) : const column& {const}
+
++ operator=(initializerList : const std::initializer_list<vector<T>>&) : matrix<T>&
++ operator=(other : const matrix<T>&) : matrix<T>&
++ operator=(other : matrix<T>&&) : matrix<T>&
+
+<<friend>>
++ operator<<(out : std::ostream&, m : const matrix<T>&) : std::ostream&
+}
+
+rectangle column <<typedef>> {
+}
+
+class pair<T,R=T> {
++ first : T
++ second : R
+--
+- __copy(other : const pair<T,R>&)
+- __move(other : pair<T,R>&&)
+
++ pair(f : T, s : R)
++ pair(other : const : pair<T,R>&)
++ pair(other : pair<T,R>&&)
+
++ operator=(other : const : pair<T,R>&)
++ operator=(other : pair<T,R>&&)
+}
+
+class field {
+- _cells : matrix<cell>
+--
+- __copy(other : const field&)
+- __move(other : field&&)
+
++ {static} default_entry_exit_generator(f : const field&) : pair<pair<int>,pair<int>>
+
++ field(width : int, height : int, generator : entry_exit_generator = default_entry_exit_generator)
++ field(other : const field&)
++ field(other : field&&)
+
++ width() : int {const}
++ height() : int {const}
+
++ get(x : int, y : int) : cell&
++ get(x : int, y : int) : const cell& {const}
+
++ operator=(other : const field&) : field&
++ operator=(other : field&&) : field&
+
+<<friend>>
++ operator<<(out : std::ostream&, f : const field&) : std::ostream&
+}
+
+rectangle entry_exit_generator <<typedef>> {
+}
+
+class cell {
+- _type : int = 0
+- _item : artifact
+--
+- __copy(other : const cell&)
+- __move(other : cell&&)
+
++ cell(type : int = CELL_NOTHING, item : const artifact& = artifact())
++ cell(other : const cell&)
++ cell(other : cell&&)
+
++ type() : int {const}
++ set_type(type : int)
+
++ item() : const artifact& {const}
++ set_item(item : const artifact&)
+
++ operator=(other : const cell&) : cell&
++ operator=(other : cell&&) : cell&
+
+<<friend>>
++ operator<<(out : std::ostream&, c : const cell&) : std::stream&
+}
+
+enum cell_types {
+CELL_NOTHING = 0
+CELL_ENTRY = 1
+CELL_EXIT = 2
+}
+
+class artifact {
+- _data : std::unique_ptr<data>
+--
+- __copy(other : const artifact&)
+- __move(other : artifact&&)
+
+- {static} get_id() : int
+
++ artifact()
++ artifact(id : int)
++ artifact(other : const artifact&)
++ artifact(other : artifact&&
+
++ type() : int {const}
+
++ id() : int {const}
+
++ is_none() : bool {const}
+
++ operator=(other : const artifact&) : artifact&
++ operator=(other : artifact&&) : artifact&
+
+<<friend>>
++ operator<<(out : std::ostream&, art : const artifact&) : std::ostream&
+}
+
+class artifact::data {
+- _id : int = get_id() {const}
+- _type : int
+--
++ data(type: int)
++ data(other : const data&)
+}
+
+enum artifact_types {
+ART_NOTHING = 0
+}
+
+vector .d.> iterator: <<creates>>
+vector .d.> const_iterator: <<creates>>
+iterator .d.> vector_iterator: <<import>>
+const_iterator .d.> vector_iterator: <<import>>
+iterator .r[hidden].> const_iterator
+vector_iterator ..> vector: <<friend>>
+vector -r-* matrix
+matrix .d.> column
+column .l.> vector: <<import>>
+matrix -* field
+field .> pair: <<creates>>
+field .d.> entry_exit_generator
+entry_exit_generator .> pair: <<import>>
+cell -l-o field
+cell_types -u-o cell
+artifact -l-o cell
+artifact::data -u-* artifact
+artifact::data .d.> artifact: <<friend>>
+artifact_types -r-o artifact::data
+
+@enduml

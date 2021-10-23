@@ -1,0 +1,26 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/petr/CLionProjects/OOP_Lab1_Final/game/field/cell.cpp
+cell.h
+/home/petr/CLionProjects/OOP_Lab1_Final/game/field/cell.h
+
+/home/petr/CLionProjects/OOP_Lab1_Final/game/field/cell.h
+iostream
+-
+memory
+-
+../items/artifact.h
+/home/petr/CLionProjects/OOP_Lab1_Final/game/items/artifact.h
+
+/home/petr/CLionProjects/OOP_Lab1_Final/game/items/artifact.h
+iostream
+-
+memory
+-
+

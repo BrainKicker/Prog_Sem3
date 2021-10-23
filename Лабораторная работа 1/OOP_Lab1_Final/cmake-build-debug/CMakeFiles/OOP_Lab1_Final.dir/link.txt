@@ -1,0 +1,1 @@
+/usr/bin/c++ -g CMakeFiles/OOP_Lab1_Final.dir/main.cpp.o CMakeFiles/OOP_Lab1_Final.dir/game/field/field.cpp.o CMakeFiles/OOP_Lab1_Final.dir/game/items/artifact.cpp.o CMakeFiles/OOP_Lab1_Final.dir/game/field/cell.cpp.o -o OOP_Lab1_Final 
